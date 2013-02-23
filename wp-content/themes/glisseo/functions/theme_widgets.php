@@ -229,95 +229,6 @@
 		}
 	}
 
-/*-----------------------------------------------------------------------------------
-
-	Plugin Name: Social Buttons Widget Plugin
-	Plugin URI: http://www.thunderbuddies.com
-	Description: A widget that displays a simple list of social profile icons
-	Version: 1.0
-	Author: thunderbuddies
-	Author URI: http://www.thunderbuddies.com
-
------------------------------------------------------------------------------------*/	
-	add_action( 'widgets_init', create_function('', 'return register_widget("tb_glisseoSocials_old");') );
-	class tb_glisseoSocials_old extends WP_Widget {
-	
-		function tb_glisseoSocials_old() {
-			$widget_ops = array('classname' => 'tb_glisseoSocials_old', 'description' => 'Old list of Social Profile icons');
-	    	$this->WP_Widget('tb_glisseoSocials_old', 'Glisseo Socials Widget', $widget_ops);
-		}
-		
-		function form( $instance ) {
-			$instance = wp_parse_args( (array) $instance ); ?>
-	        <p><label for="<?php echo $this->get_field_id( 'title' ); ?>">Title:</label><br /><input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php if( isset($instance['title']) ) echo $instance['title']; ?>" /></p>
-	        
-	       	     <p><label for="<?php echo $this->get_field_id( 'contact_socials_dribble' ); ?>">Dribble Link:</label><br /><input class="widefat" id="<?php echo $this->get_field_id( 'contact_socials_dribble' ); ?>" name="<?php echo $this->get_field_name( 'contact_socials_dribble' ); ?>" value="<?php if( isset($instance['contact_socials_dribble']) ) echo $instance['contact_socials_dribble']; ?>" /></p>
-	       	     <p><label for="<?php echo $this->get_field_id( 'contact_socials_facebook' ); ?>">Facebook Link:</label><br /><input class="widefat" id="<?php echo $this->get_field_id( 'contact_socials_facebook' ); ?>" name="<?php echo $this->get_field_name( 'contact_socials_facebook' ); ?>" value="<?php if( isset($instance['contact_socials_facebook']) ) echo $instance['contact_socials_facebook']; ?>" /></p>
-	             <p><label for="<?php echo $this->get_field_id( 'contact_socials_flickr' ); ?>">Flickr Link:</label><br /><input class="widefat" id="<?php echo $this->get_field_id( 'contact_socials_flickr' ); ?>" name="<?php echo $this->get_field_name( 'contact_socials_flickr' ); ?>" value="<?php if( isset($instance['contact_socials_flickr']) ) echo $instance['contact_socials_flickr']; ?>" /></p>
-	             <p><label for="<?php echo $this->get_field_id( 'contact_socials_forrst' ); ?>">Forrst Link:</label><br /><input class="widefat" id="<?php echo $this->get_field_id( 'contact_socials_forrst' ); ?>" name="<?php echo $this->get_field_name( 'contact_socials_forrst' ); ?>" value="<?php if( isset($instance['contact_socials_forrst']) ) echo $instance['contact_socials_forrst']; ?>" /></p>
-	              <p><label for="<?php echo $this->get_field_id( 'contact_socials_google' ); ?>">Google Plus Link:</label><br /><input class="widefat" id="<?php echo $this->get_field_id( 'contact_socials_google' ); ?>" name="<?php echo $this->get_field_name( 'contact_socials_google' ); ?>" value="<?php if( isset($instance['contact_socials_google']) ) echo $instance['contact_socials_google']; ?>" /></p>
-	              <p><label for="<?php echo $this->get_field_id( 'contact_socials_lastfm' ); ?>">LastFM Link:</label><br /><input class="widefat" id="<?php echo $this->get_field_id( 'contact_socials_lastfm' ); ?>" name="<?php echo $this->get_field_name( 'contact_socials_lastfm' ); ?>" value="<?php if( isset($instance['contact_socials_lastfm']) ) echo $instance['contact_socials_lastfm']; ?>" /></p>
-	              <p><label for="<?php echo $this->get_field_id( 'contact_socials_linkedin' ); ?>">LinkedIn Link:</label><br /><input class="widefat" id="<?php echo $this->get_field_id( 'contact_socials_linkedin' ); ?>" name="<?php echo $this->get_field_name( 'contact_socials_linkedin' ); ?>" value="<?php if( isset($instance['contact_socials_linkedin']) ) echo $instance['contact_socials_linkedin']; ?>" /></p>
-	              <p><label for="<?php echo $this->get_field_id( 'contact_socials_pinterest' ); ?>">Pinterest Link:</label><br /><input class="widefat" id="<?php echo $this->get_field_id( 'contact_socials_pinterest' ); ?>" name="<?php echo $this->get_field_name( 'contact_socials_pinterest' ); ?>" value="<?php if( isset($instance['contact_socials_pinterest']) ) echo $instance['contact_socials_pinterest']; ?>" /></p>
-	             <p><label for="<?php echo $this->get_field_id( 'contact_socials_rss' ); ?>">RSS Link:</label><br /><input class="widefat" id="<?php echo $this->get_field_id( 'contact_socials_rss' ); ?>" name="<?php echo $this->get_field_name( 'contact_socials_rss' ); ?>" value="<?php if( isset($instance['contact_socials_rss']) ) echo $instance['contact_socials_rss']; ?>" /></p>
-	             <p><label for="<?php echo $this->get_field_id( 'contact_socials_skype' ); ?>">Skype Link:</label><br /><input class="widefat" id="<?php echo $this->get_field_id( 'contact_socials_skype' ); ?>" name="<?php echo $this->get_field_name( 'contact_socials_skype' ); ?>" value="<?php if( isset($instance['contact_socials_skype']) ) echo $instance['contact_socials_skype']; ?>" /></p>
-	             <p><label for="<?php echo $this->get_field_id( 'contact_socials_tumblr' ); ?>">Tumblr Link:</label><br /><input class="widefat" id="<?php echo $this->get_field_id( 'contact_socials_tumblr' ); ?>" name="<?php echo $this->get_field_name( 'contact_socials_tumblr' ); ?>" value="<?php if( isset($instance['contact_socials_tumblr']) ) echo $instance['contact_socials_tumblr']; ?>" /></p>
-	             <p><label for="<?php echo $this->get_field_id( 'contact_socials_twitter' ); ?>">Twitter Link:</label><br /><input class="widefat" id="<?php echo $this->get_field_id( 'contact_socials_twitter' ); ?>" name="<?php echo $this->get_field_name( 'contact_socials_twitter' ); ?>" value="<?php if( isset($instance['contact_socials_twitter']) ) echo $instance['contact_socials_twitter']; ?>" /></p>
-	             <p><label for="<?php echo $this->get_field_id( 'contact_socials_vimeo' ); ?>">Vimeo Link:</label><br /><input class="widefat" id="<?php echo $this->get_field_id( 'contact_socials_vimeo' ); ?>" name="<?php echo $this->get_field_name( 'contact_socials_vimeo' ); ?>" value="<?php if( isset($instance['contact_socials_vimeo']) ) echo $instance['contact_socials_vimeo']; ?>" /></p>
-	             <p><label for="<?php echo $this->get_field_id( 'contact_socials_youtube' ); ?>">Youtube Link:</label><br /><input class="widefat" id="<?php echo $this->get_field_id( 'contact_socials_youtube' ); ?>" name="<?php echo $this->get_field_name( 'contact_socials_youtube' ); ?>" value="<?php if( isset($instance['contact_socials_youtube']) ) echo $instance['contact_socials_youtube']; ?>" /></p>
-	 	<?php
-		}
-	
-		function widget( $args, $instance ) {
-			extract( $args );
-	
-			$title = apply_filters('widget_title', $instance['title'] );
-			if ( isset($instance['id']) ) $id = $instance['id'];
-			$contact_socials_youtube = $instance['contact_socials_youtube'];
-			$contact_socials_vimeo = $instance['contact_socials_vimeo'];
-			$contact_socials_tumblr = $instance['contact_socials_tumblr'];
-			$contact_socials_skype = $instance['contact_socials_skype'];
-			$contact_socials_rss = $instance['contact_socials_rss'];
-			$contact_socials_pinterest = $instance['contact_socials_pinterest'];
-			$contact_socials_linkedin = $instance['contact_socials_linkedin'];
-			$contact_socials_lastfm = $instance['contact_socials_lastfm'];
-			$contact_socials_google = $instance['contact_socials_google'];
-			$contact_socials_forrst = $instance['contact_socials_forrst'];
-			$contact_socials_facebook = $instance['contact_socials_facebook'];
-			$contact_socials_dribble = $instance['contact_socials_dribble'];
-						
-			echo $before_widget;
-		   	if ( $title ) echo $before_title . $title . $after_title;
-			echo '<ul class="social">';
-				if($contact_socials_twitter!="") echo '<li><a title="'.$contact_socials_twitter_description.'" href="'.$contact_socials_twitter.'" id="social_twitter"></a></li>';
-			echo '</ul>';	
-		}
-	
-		function update( $new_instance, $old_instance ) {
-			$instance = $old_instance;
-			$instance['title'] = $new_instance['title'];
-			$instance['location_headline'] = $new_instance['location_headline'];
-			$instance['location_content'] = $new_instance['location_content'];
-			$instance['contact_headline'] = $new_instance['contact_headline'];
-			$instance['contact_content'] = $new_instance['contact_content'];
-			$instance['contact_socials_headline'] = $new_instance['contact_socials_headline'];
-			
-			$instance['contact_socials_facebook'] = $new_instance['contact_socials_facebook'];
-			$instance['contact_socials_twitter'] = $new_instance['contact_socials_twitter'];
-			$instance['contact_socials_google'] = $new_instance['contact_socials_google'];
-			$instance['contact_socials_flickr'] = $new_instance['contact_socials_flickr'];
-			$instance['contact_socials_youtube'] = $new_instance['contact_socials_youtube'];
-			$instance['contact_socials_rss'] = $new_instance['contact_socials_rss'];
-			$instance['contact_socials_facebook_description'] = $new_instance['contact_socials_facebook_description'];
-			$instance['contact_socials_twitter_description'] = $new_instance['contact_socials_twitter_description'];
-			$instance['contact_socials_google_description'] = $new_instance['contact_socials_google_description'];
-			$instance['contact_socials_flickr_description'] = $new_instance['contact_socials_flickr_description'];
-			$instance['contact_socials_youtube_description'] = $new_instance['contact_socials_youtube_description'];
-			$instance['contact_socials_rss_description'] = $new_instance['contact_socials_rss_description'];
-			return $instance;
-		}
-	}
-	
 	
 	/*-----------------------------------------------------------------------------------
 
@@ -367,7 +278,8 @@
 		        <?php 
 		        	$social_count=0;
 		        	$social_selected="";
-		        	if(isset($instance['socialicon']))
+		        	$uniq = uniqid();
+		        	if(isset($instance['socialicon'])){
 			        	foreach($instance['socialicon'] as $socialicon){
 				        	if(!empty($socialicon))
 				        		echo '<div><select class="widefat" name="'.$this->get_field_name( 'socialicon' ).'[]">';
@@ -420,27 +332,28 @@
 
 						        echo '<br><a href="#" class="tb_glisseo_delete_social">Delete Social</a></div><br>';
 			        	}
-		        ;?>
+			        }?>
 	        	<span></span>
-	        	<br><hr><a href="#" class="tb_glisseo_add_social">Add Social</a>
+	        	<br><hr><a href='#' class="tb_glisseo_add_social_<?php echo $uniq;?>">Add Social</a>
 	        </div>
 	        
 	        <script>
-	        	jQuery(".tb_glisseo_add_social").click(function(){
-		        	$parent = jQuery(this).closest("div");
-		        	$field = $parent.find("div:first").clone(true);
-		        	$field.find("select,input").each(function(){
-			        	$this = jQuery(this);
-			        	$this.attr("name",$this.data("name"));
-			        	});
-		        	$field.css("display","");
-		        	$parent.find("span").before($field);
-		        	return false;
-	        	});
-	        	jQuery(".tb_glisseo_delete_social").click(function(){
-		        	jQuery(this).closest("div").remove();	
-		        	return false;
-	        	});
+		       
+		        	jQuery(".tb_glisseo_add_social_<?php echo $uniq;?>").live("click",function(){
+		        		$parent = jQuery(this).closest("div");
+		        		$field = $parent.find("div:first").clone(true);
+			        	$field.find("select,input").each(function(){
+				        	$this = jQuery(this);
+				        	$this.attr("name",$this.data("name"));
+				        	});
+			        	$field.css("display","");
+			        	$parent.find("span").before($field);
+			        	return false;
+			        });
+		        	jQuery(".tb_glisseo_delete_social").live("click",function(){
+			        	jQuery(this).closest("div").remove();	
+			        	return false;
+		        	});
 
 	        </script>
 	    <?php

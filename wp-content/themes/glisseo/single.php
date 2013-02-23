@@ -11,6 +11,9 @@
 	//Page Options
 		if(have_posts()) $pageoptions = getOptions($post_id);	
 
+	//Theme Options	
+		$tb_themeoptions = array_merge(get_option("tb_glisseo_theme_general_options"),get_option("tb_glisseo_theme_header_options"),get_option("tb_glisseo_theme_body_options"),get_option("tb_glisseo_theme_blog_options"),get_option("tb_glisseo_theme_portfolio_options"));	
+
 	//Page Head Area
 		if(isset($pageoptions['tb_glisseo_activate_page_title'])){ 
 			$headline = false;
@@ -20,13 +23,14 @@
 			//Headline
 			$htitle = isset($pageoptions["tb_glisseo_page_head_alternative_title"]) ? $pageoptions['tb_glisseo_page_head_alternative_title'] : get_the_title();
 			//Head Image
-			if(isset($pageoptions["tb_glisseo_page_head_image"])){
+			if(!empty($pageoptions["tb_glisseo_page_head_image"])){
 				$himage = wp_get_attachment_image_src($pageoptions["tb_glisseo_page_head_image"],'full');
 				$himage = $himage[0]; 
 			} 
 			else {
-				$himage = get_option("tb_glisseo_body_head_image");
+				$himage = $tb_themeoptions["tb_glisseo_body_head_image"];
 			}
+			$himage = !isset($tb_themeoptions["tb_glisseo_blog_hide_default_head_image"]) ? $himage : "";
 		}
 		
 	//Highlight Color	
@@ -37,7 +41,7 @@
 <!-- Begin Head Image -->
 <div class="head-image"> 
 	<?php if($headline){?>
-		<img src="<?php echo $himage; ?>" alt="" />
+		<?php if(!empty($himage)){ ?><img src="<?php echo $himage; ?>" alt="" /><?php } ?>
 		<div class="page-title">
 		    <h1><?php echo $htitle; ?></h1>
 		</div>
@@ -59,8 +63,8 @@
     <?php while (have_posts()) : the_post(); ?>
     <?php
 			//Post Infos
-	    		$post_time_day = get_post_time('j', true);
-		        $post_time_month = get_post_time('M', true);
+	    		$post_time_day = get_the_time('j', true);
+		        $post_time_month = get_the_time('M', true);
 
 	    		$postoptions = getOptions($post->ID);
 
@@ -70,7 +74,9 @@
 						switch ($postoptions["tb_glisseo_post_type"]) {
 							case 'image':
 										$blogimageurl = aq_resize(wp_get_attachment_url( get_post_thumbnail_id($post->ID) ),960);
-										$post_top = '<a href="'.get_permalink().'"><img src="'.$blogimageurl.'" alt=""></a>';											
+										if(!empty($blogimageurl))
+											$post_top = '<img src="'.$blogimageurl.'" alt="">';											
+										else $post_top = "";
 										break;
 							case 'video':
 										if($postoptions["tb_glisseo_video_type"]=="youtube"){
@@ -145,7 +151,7 @@
         <ul class="share">
           <li><div id="facebook" data-url="<?php the_permalink();?>" data-text="<?php the_title();?>"></div></li>
           <li><div id="twitter" data-url="<?php the_permalink();?>" data-text="<?php the_title();?>"></div></li>
-          <li><div id="google" data-url="<?php the_permalink();?>" data-text="<?php the_title();?>"></div></a></li>
+          <li><div id="google" data-url="<?php the_permalink();?>" data-text="<?php the_title();?>"></div></li>
           <li><div id="pinterest" data-url="<?php the_permalink();?>" data-text="<?php the_title();?>"></div></li>
         </ul>
         <script>

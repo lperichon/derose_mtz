@@ -79,4 +79,11 @@ function fb_enqueue_wp_pointer( $hook_suffix ) {
 }
 add_action( 'admin_enqueue_scripts', 'fb_enqueue_wp_pointer' );
 
+
+function load_media_box(){
+    wp_enqueue_media();
+}
+add_action('admin_enqueue_scripts', 'load_media_box');
+
+
 ?>

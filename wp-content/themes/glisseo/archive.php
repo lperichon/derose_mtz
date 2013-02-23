@@ -71,7 +71,7 @@
 <!-- Begin Head Image -->
 <div class="head-image"> 
 	<?php if($headline){?>
-		<img src="<?php echo $himage; ?>" alt="" />
+		<?php if(!empty($himage)){ ?><img src="<?php echo $himage; ?>" alt="" /><?php } ?>
 		<div class="page-title">
 		    <h1><?php echo $htitle; ?></h1>
 		</div>
@@ -111,11 +111,11 @@
 	<?php endif; ?>
 	</div>
     <!-- End Container -->
-</div>
+</div></div>
 <!-- End Wrapper -->
 <?php endif; //is_tax ?>	
 
-<?php if(is_archive()): 
+<?php if(is_archive() && !is_tax()): 
 	wp_link_pages();
 	$htitle = __('Archive', 'tb_glisseo');
 	//$pageoptions["tb_glisseo_blog_display_type"]="columns";

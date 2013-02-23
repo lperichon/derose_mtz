@@ -57,7 +57,7 @@ Template Name: Portfolio
 <!-- Begin Head Image -->
 <div class="head-image"> 
 	<?php if($headline){?>
-		<img src="<?php echo $himage; ?>" alt="" />
+		<?php if(!empty($himage)){ ?><img src="<?php echo $himage; ?>" alt="" /><?php } ?>
 		<div class="page-title">
 		    <h1><?php echo $htitle; ?></h1>
 		</div>

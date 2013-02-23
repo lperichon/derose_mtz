@@ -50,14 +50,13 @@ Template Name: Blog
 				
 	//Sidebar sets Fullwidth automatically
 		if(isset($pageoptions["tb_glisseo_sidebar"]) && $pageoptions["tb_glisseo_sidebar"]!="nosidebar") $pageoptions["tb_glisseo_blog_display_type"] = "full";
-		
+			
 get_header(); ?>
 
 <!-- Begin Head Image -->
 <div class="head-image"> 
 	<?php if($headline){?>
-		<img src="<?php echo $himage; ?>" alt="" />
-		
+		<?php if(!empty($himage)){ ?><img src="<?php echo $himage; ?>" alt="" /><?php } ?>
 			<div class="page-title">
 			    <h1><?php echo $htitle;?></h1>
 			</div>
@@ -89,11 +88,13 @@ get_header(); ?>
 		    <div class="posts-grid">  
 	    <?php } ?>
     
-    <?php while (have_posts()) : the_post(); ?>
+    <?php //Postcounter for Linebreaks
+		$postcounter = 1;
+		while (have_posts()) : the_post(); ?>
     <?php
 			//Post Infos
-	    		$post_time_day = get_post_time('j', true);
-		        $post_time_month = get_post_time('M', true);
+	    		$post_time_day = get_the_time('j');
+		        $post_time_month = get_the_time('M');
 
 	    		$postoptions = getOptions($post->ID);
 
@@ -105,7 +106,8 @@ get_header(); ?>
 						switch ($postoptions["tb_glisseo_post_type"]) {
 							case 'image':
 										$blogimageurl = aq_resize(wp_get_attachment_url( get_post_thumbnail_id($post->ID) ),960);
-										$post_top = '<a href="'.get_permalink().'"><img src="'.$blogimageurl.'" alt=""></a>';											
+										if(!empty($blogimageurl)) $post_top = '<a href="'.get_permalink().'"><img src="'.$blogimageurl.'" alt=""></a>';								
+										else $post_top = "";			
 										break;
 							case 'video':
 										if($postoptions["tb_glisseo_video_type"]=="youtube"){
@@ -163,7 +165,8 @@ get_header(); ?>
 			    	}
 			    	else{
 			    		$blogimageurl = aq_resize(wp_get_attachment_url( get_post_thumbnail_id($post->ID) ),370,190,true);
-						$post_top = '<a href="'.get_permalink().'"><img src="'.$blogimageurl.'" alt=""></a>';	
+						if(!empty($blogimageurl)) $post_top = '<a href="'.get_permalink().'"><img src="'.$blogimageurl.'" alt=""></a>';								
+						else $post_top = "";	
 					}	
 				//Categories
 					$category_links = "";
@@ -171,6 +174,10 @@ get_header(); ?>
 						$category_links .= ', <a href="'.get_category_link($category->term_id ).'">'.$category->cat_name.'</a>';
 					}
 					$category_links = substr($category_links, 2);
+					
+				//New Row = clear:both
+				    $clearrow = $postcounter % 2 ? "" : '<div style="clear:both"></div>';
+				    $postcounter++;
 	?>
 	<?php //Checking if Style Columns or Full ?>
 	 	<?php if (!isset($pageoptions["tb_glisseo_blog_display_type"]) || $pageoptions["tb_glisseo_blog_display_type"]!="columns"){ ?>
@@ -209,11 +216,13 @@ get_header(); ?>
 		        <div class="meta"> <?php echo $category_links; ?> <span>|</span> <span class="comments"><?php comments_popup_link(__("0 Comments","tb_glisseo"), __("1 Comment","tb_glisseo"), '% '.__("Comments","tb_glisseo")); ?></span> </div>
 		      </div>
 		    </div>
+		    <?php echo $clearrow; ?>
 		    <!-- End Post Columns--> 
 		<?php } ?>
 	<?php endwhile; ?>
 	
 	<!-- Begin Page Navi -->
+	<div style="clear:both"></div>
 	<?php if(function_exists('pagination')){ pagination(); }else{ paginate_links(); } ?>    
     <!-- End Page Navi --> 
     <?php if(isset($pageoptions["tb_glisseo_blog_display_type"]) && $pageoptions["tb_glisseo_blog_display_type"]=="columns"){ ?></div><?php } //End Post Column ?>

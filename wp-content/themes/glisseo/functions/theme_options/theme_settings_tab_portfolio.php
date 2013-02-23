@@ -50,7 +50,7 @@ add_action( 'admin_init', 'tb_glisseo_theme_initialize_portfolio_options' );
  * in the add_settings_section function.
  */
 function tb_glisseo_portfolio_options_callback() {
-	echo '<p>Build unlimited Portfolios here. Insert a human readable <strong>name</strong> and choose the <strong>page</strong> that holds the Portfolio.</p><p>When you create a new portfolio it will be visible in the WP menu after saving.</p><p>You can only select from Pages of the Template type "Portfolio". You must set the Page Attribute -> Template -> "Portfolio" first in the "Edit Page" screen.</p><p>You can copy the slug here if you want to use it in a shortcode (or use our ShortCode Button). You could also change the slug here but only if you really, really need to and know what you are up to!!</p>';
+	echo '<p>Build unlimited Portfolios here. Insert a human readable <strong>name</strong> and choose the <strong>page</strong> that holds the Portfolio.</p><p>When you create a new portfolio it will be visible in the WP menu after saving.</p><p>You can only select from Pages of the Template type "Portfolio". You must set the Page Attribute -> Template -> "Portfolio" first in the "Edit Page" screen.</p><p>You can copy the slug here if you want to use it in a shortcode (or use our ShortCode Button). You could also change the slug here but only if you really, really need to and know what you are up to!!<br><br><strong>IMPORTANT: Slug must begin with "portfolio_"! You can change the number to whatever you like as long as the slug keeps unique.</strong></p>';
 } // end tb_glisseo_general_options_callback
 
 

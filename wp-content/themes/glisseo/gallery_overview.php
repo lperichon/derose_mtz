@@ -52,7 +52,7 @@ Template Name: Gallery Overview
 <!-- Begin Head Image -->
 <div class="head-image"> 
 	<?php if($headline){?>
-		<img src="<?php echo $himage; ?>" alt="" />
+		<?php if(!empty($himage)){ ?><img src="<?php echo $himage; ?>" alt="" /><?php } ?>
 		<div class="page-title">
 		    <h1><?php echo $htitle; ?></h1>
 		</div>
@@ -73,7 +73,10 @@ Template Name: Gallery Overview
 		<?php
 		//list terms in a given taxonomy (useful as a widget for twentyten)
 		$taxonomy = 'category_gallery';
-		$tax_terms = get_terms($taxonomy);
+		//$tax_terms = get_terms($taxonomy);
+		$tax_terms = get_terms($taxonomy, array(
+		 	'orderby'    => 'slug'
+		 ));
 		?>
 		<ul>
 		<?php

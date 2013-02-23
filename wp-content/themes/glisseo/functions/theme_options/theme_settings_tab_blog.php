@@ -51,6 +51,17 @@ function tb_glisseo_theme_initialize_blog_options() {
 			'tb_glisseo_related_posts_active','tb_glisseo_theme_blog_options','Show related Posts in Blog Posts (this overrules the single post option)?'
 		)
 	);
+	
+	add_settings_field(	
+		'tb_glisseo_blog_hide_default_head_image',						// ID used to identify the field throughout the theme
+		'Hide Body Default Image for Posts?',							// The label to the left of the option interface element
+		'tb_glisseo_checkbox_callback',	// The name of the function responsible for rendering the option interface
+		'tb_glisseo_theme_blog_options',	// The page on which this option will be displayed
+		'tb_glisseo_blog_options_section',			// The name of the section to which this field belongs
+		array(								// The array of arguments to pass to the callback. In this case, just a description.
+			'tb_glisseo_blog_hide_default_head_image','tb_glisseo_theme_blog_options','Hide the default image for the body header (Options Tab "Body" on post pages)'
+		)
+	);
 		
 	register_setting(
 		'tb_glisseo_theme_blog_options',

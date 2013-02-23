@@ -187,7 +187,7 @@
 	    $j = 1; 
 	    
 	    //print_r($options);
-	    echo '<strong><div style="width:110px;float:left;">&nbsp;Portfolio Name</div><div style="width:150px;float:left;">&nbsp;&nbsp;Slug</div><div style="width:170px;float:left;">&nbsp;&nbsp;Page</div><div style="width:100px;float:left;">&nbsp;&nbsp;Style</div></strong><div style="clear:both;"></div>';
+	    echo '<strong><div style="width:110px;float:left;">&nbsp;Portfolio Name</div><div style="width:150px;float:left;">&nbsp;&nbsp;Slug <br>! begins with "portfolio_" !</div><div style="width:170px;float:left;">&nbsp;&nbsp;Page</div><div style="width:100px;float:left;">&nbsp;&nbsp;Style</div></strong><div style="clear:both;"></div>';
 	    if (is_array($options) && !empty($options)) {  
 	        foreach($options as $row) {
 	        	if(($j%4)==0){
@@ -224,7 +224,7 @@
 	        }  
 	    } else {  
 	        echo '<li><input type="text" id="' . $name . '" name="' . $section . '[' . $name . "_name-" . $i . ']" value="" style="width:110px"/> 
-	                    <input type="text" id="' . $name . 'Slug" class="slug" name="' . $section . '[' . $name . "_slug-" . $i . ']" value="'.uniqid("portfolio_").'" style="width:150px"/>';
+	                    <input type="text" id="' . $name . 'Slug" class="slug" name="' . $section . '[' . $name . "_slug-" . $i . ']" value="portfolio_'.substr(rand()*8,0,10).'" style="width:150px"/>';
 	         echo '<select id="' . $name . 'Page" name="' . $section . '[' . $name . "_page-" . $i . ']">';
 		            $pages = get_pages(array(
 						'meta_key' => '_wp_page_template',
@@ -312,45 +312,60 @@
 		$name = $args[0];
 		$section = $args[1];
 		$desc = $args[2];
+		$args[3] = empty($args[3]) ? "#fff" : $args[3];
 		
 		$options = get_option( $section );
 		
 		// Render the output
 		echo "
 			<script>
-				jQuery(document).ready(function(jQuery) {
-						jQuery('.custom_upload_image_button').click(function() {
-							formfield = jQuery(this).siblings('.custom_upload_image');
-							preview = jQuery(this).siblings('.custom_preview_image');
-							tb_show('', 'media-upload.php?type=image&TB_iframe=true');
-							window.send_to_editor = function(html) {
-								imgurl = jQuery('img',html).attr('src');
-								classes = jQuery('img', html).attr('class');
-								id = classes.replace(/(.*?)wp-image-/, '');
-								formfield.val(imgurl);
-								preview.attr('src', imgurl);
-								tb_remove();
-							}
-							return false;
-						});
-						jQuery('.custom_clear_image_button').click(function() {
-							var defaultImage = jQuery(this).parent().siblings('.custom_default_image').text();
-							jQuery(this).parent().siblings('.custom_upload_image').val('');
-							jQuery(this).parent().siblings('.custom_preview_image').attr('src', defaultImage);
-							return false;
-						});
-					});
+				jQuery(document).ready(function(){
+					  var _custom_media = true, orig_send_attachment = wp.media.editor.send.attachment;
+					  jQuery('#".$name."_button').click(function() {
+					  	var send_attachment_bkp = wp.media.editor.send.attachment;
+					    var button = jQuery(this);
+					    var id = button.attr('id').replace('_button', '');
+					    _custom_media = true;
+					    wp.media.editor.send.attachment = function(props, attachment){
+					      if ( _custom_media ) {
+					        jQuery('#'+id).val(attachment.url);
+					        jQuery('#'+id+'_id').val(attachment.id);
+					        jQuery('#'+id+'_image').attr('src',attachment.url);
+					      } else {
+					        return _orig_send_attachment.apply( this, [props, attachment] );
+					      };
+					    }
+					    wp.media.editor.open(button);
+					    return false;
+					  });
+					  
+					  jQuery('.add_media').on('click', function(){
+					    _custom_media = false;
+					  });
+					  
+					  jQuery('#". $name ."_clear').click(function(){
+						var button = jQuery(this);
+					    var id = button.attr('id').replace('_button', '');
+						var defaultImage = jQuery('#".$name."_defimage').text();
+						jQuery('#".$name."').val('');
+						jQuery('#".$name."_image').attr('src', defaultImage);
+						return false;
+					});	  
+				});
 			</script>
 		";
 		
-		$image = get_template_directory_uri().'/style/images/icon-bullet.png';
-		echo '<span class="custom_default_image" style="display:none">'.$image.'</span>';
-		if ($options[$name]) { $image = $options[$name];}
-		echo	'<input name="' . $section . '[' . $name . ']" type="hidden" class="custom_upload_image" value="'.$options[$name].'" />
-					<img src="'.$image.'" class="custom_preview_image" alt="" style="max-width:300px" /><br />
-						<input class="custom_upload_image_button button" type="button" value="Choose Image" />
-						<small> <a href="#" class="custom_clear_image_button">Remove Image</a></small>
-						<br clear="all" /><span class="description">'.$desc.'';
+		$image = get_template_directory_uri().'/images/tiles/lupe.png';
+								
+		$display = empty($options[$name]) ? $image : $options[$name];			
+								
+	   echo '   <div class="uploader">
+	   			  <span id="'.$name.'_defimage" style="display:none">'.$image.'</span>
+	   			  <img style="max-width:300px;padding:10px; box-shadow: inset 0 0 15px rgba(0,0,0,0.1),inset 0 0 0 1px rgba(0,0,0,0.05); background-color:'.$args[3].'" id="'.$name.'_image" src="'.$display.'" /><br>
+				  <input type="hidden" name="' . $section . '[' . $name . ']" id="'.$name.'" value="'.$options[$name].'" />
+				  <input class="button" style="width:105px" name="'.$name.'_button" id="'.$name.'_button" value="Choose Image" />
+				  <small>&nbsp;<a href="#" id="'.$name.'_clear">Remove Image</a></small><br><br>
+				</div>';
 	} // end tb_glisseo_input_element_callback
 
 

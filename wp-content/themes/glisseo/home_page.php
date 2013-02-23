@@ -51,6 +51,7 @@ Template Name: Home
 	
 		global $wpdb;
 		global $table_prefix;
+		$table_prefix = $wpdb->base_prefix;
 		if (!isset($wpdb->tablename)) {
 			$wpdb->tablename = $table_prefix . 'revslider_sliders';
 		}

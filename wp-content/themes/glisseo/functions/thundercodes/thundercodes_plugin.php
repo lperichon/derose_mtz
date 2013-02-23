@@ -27,7 +27,7 @@
 	                    }});
 	
 	                    m.add({title : 'Intro Text', onclick : function() {
-	                    	tinyMCE.activeEditor.execCommand('mceInsertContent', 0, '[introtext]YOUR_TEXT_HERE[/introtext]');                    
+	                    	tinyMCE.activeEditor.execCommand('mceInsertContent', 0, '[intro]YOUR_TEXT_HERE[/intro]');                    
 	                    }});
 	                    
 	                    m.add({title : 'Divider', onclick : function() {

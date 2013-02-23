@@ -214,6 +214,8 @@ function show_custom_meta_box() {
                 		
                 		global $wpdb;
                 		global $table_prefix;
+                		$table_prefix = $wpdb->base_prefix;
+                		
                 		if (!isset($wpdb->tablename)) {
 							$wpdb->tablename = $table_prefix . 'revslider_sliders';
 						}
@@ -296,12 +298,12 @@ function show_custom_meta_box() {
 					case 'image':
 						$image_def = get_template_directory_uri().'/style/images/icon-bullet.png';	
 						if ($meta) { $image = wp_get_attachment_image_src($meta, 'medium');	$image = $image[0]; }	
-						else {$image = $image_def;}			
-						echo	'<div><span class="custom_default_image" style="display:none">'.$image_def.'</span><input name="'.$field['id'].'" type="hidden" class="custom_upload_image" value="'.$meta.'" />
-									<img style="max-width:100%;box-sizing:border-box;" src="'.$image.'" class="custom_preview_image" alt="" /><br />
-										<input class="custom_upload_image_button button" type="button" value="Choose Image" />
-										<small>&nbsp;<a href="#" class="custom_clear_image_button">Remove Image</a></small>
-										<br clear="all" /></div>';
+						else $image = $image_def;			
+						echo '<span class="custom_default_image" style="display:none">'.$image_def.'</span>
+								<img style="max-width:300px;" class="custom_media_image" src="'.$image.'" />
+								<input class="custom_media_url" type="hidden" name="attachment_url" value="">
+								<input class="custom_media_id" type="hidden" name="'.$field['id'].'" value=""><br clear="all" /><a href="#" class="custom_media_upload button">Choose Image</a>&nbsp;&nbsp;&nbsp;<small>&nbsp;<a href="#" class="custom_clear_image_button">Remove Image</a></small><br>
+							<span class="description">'.$field['desc'].'</span>';
 					break;
 				
 			//Repeatable

@@ -95,8 +95,8 @@
     <?php while (have_posts()) : the_post(); ?>
     <?php
 			//Post Infos
-	    		$post_time_day = get_post_time('j', true);
-		        $post_time_month = get_post_time('M', true);
+	    		$post_time_day = get_the_time('j', true);
+		        $post_time_month = get_the_time('M', true);
 
 	    		
 

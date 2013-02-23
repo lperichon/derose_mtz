@@ -40,7 +40,7 @@
     $options = array(
       CURLOPT_RETURNTRANSFER => true, // return web page
       CURLOPT_HEADER => false, // don't return headers
-      CURLOPT_FOLLOWLOCATION => true, // follow redirects
+      //CURLOPT_FOLLOWLOCATION => true, // follow redirects
       CURLOPT_ENCODING => "", // handle all encodings
       CURLOPT_USERAGENT => 'sharrre', // who am i
       CURLOPT_AUTOREFERER => true, // set referer on redirect

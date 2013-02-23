@@ -204,20 +204,20 @@
 /**
 * Title		: Aqua Resizer
 * Description	: Resizes WordPress images on the fly
-* Version	: 1.1.4
+* Version	: 1.1.6
 * Author	: Syamil MJ
 * Author URI	: http://aquagraphite.com
 * License	: WTFPL - http://sam.zoy.org/wtfpl/
 * Documentation	: https://github.com/sy4mil/Aqua-Resizer/
 *
-* @param string $url - (required) must be uploaded using wp media uploader
-* @param int $width - (required)
-* @param int $height - (optional)
-* @param bool $crop - (optional) default to soft crop
-* @param bool $single - (optional) returns an array if false
-* @uses wp_upload_dir()
-* @uses image_resize_dimensions()
-* @uses image_resize()
+* @param	string $url - (required) must be uploaded using wp media uploader
+* @param	int $width - (required)
+* @param	int $height - (optional)
+* @param	bool $crop - (optional) default to soft crop
+* @param	bool $single - (optional) returns an array if false
+* @uses		wp_upload_dir()
+* @uses		image_resize_dimensions() | image_resize()
+* @uses		wp_get_image_editor()
 *
 * @return str|array
 */
@@ -257,29 +257,11 @@ function aq_resize( $url, $width, $height = null, $crop = null, $single = true )
 	$dst_rel_path = str_replace( '.'.$ext, '', $rel_path);
 	$destfilename = "{$upload_dir}{$dst_rel_path}-{$suffix}.{$ext}";
 
-	//if orig size is smaller
-	if($width >= $orig_w) {
-
-		if(!$dst_h) :
-			//can't resize, so return original url
-			$img_url = $url;
-			$dst_w = $orig_w;
-			$dst_h = $orig_h;
-
-		else :
-			//else check if cache exists
-			if(file_exists($destfilename) && getimagesize($destfilename)) {
-				$img_url = "{$upload_url}{$dst_rel_path}-{$suffix}.{$ext}";
-			} 
-			//else resize and return the new resized image url
-			else {
-				$resized_img_path = image_resize( $img_path, $width, $height, $crop );
-				$resized_rel_path = str_replace( $upload_dir, '', $resized_img_path);
-				$img_url = $upload_url . $resized_rel_path;
-			}
-
-		endif;
-
+	if(!$dst_h) {
+		//can't resize, so return original url
+		$img_url = $url;
+		$dst_w = $orig_w;
+		$dst_h = $orig_h;
 	}
 	//else check if cache exists
 	elseif(file_exists($destfilename) && getimagesize($destfilename)) {
@@ -287,9 +269,27 @@ function aq_resize( $url, $width, $height = null, $crop = null, $single = true )
 	} 
 	//else, we resize the image and return the new resized image url
 	else {
-		$resized_img_path = image_resize( $img_path, $width, $height, $crop );
-		$resized_rel_path = str_replace( $upload_dir, '', $resized_img_path);
-		$img_url = $upload_url . $resized_rel_path;
+
+		// Note: This pre-3.5 fallback check will edited out in subsequent version
+		if(function_exists('wp_get_image_editor')) {
+			$editor = wp_get_image_editor($img_path);
+
+			if ( is_wp_error( $editor ) || is_wp_error( $editor->resize( $width, $height, $crop ) ) )
+				return false;
+
+			$resized_img_path = $editor->save();
+
+		} else {
+			$resized_img_path = image_resize( $img_path, $width, $height, $crop ); // Fallback foo
+		}
+
+		if(!is_wp_error($resized_img_path)) {
+			$resized_rel_path = str_replace( $upload_dir, '', $resized_img_path);
+			$img_url = $upload_url . $resized_rel_path;
+		} else {
+			return false;
+		}
+
 	}
 
 	//return the output
@@ -360,7 +360,7 @@ function aq_resize( $url, $width, $height = null, $crop = null, $single = true )
 //Rebuild Search Form
 	function rebuild_search_form($form) {
 	
-	    $form = '<form class="searchform" method="get">
+	    $form = '<form class="searchform" method="get" action="'.get_bloginfo("url").'">
 	        <input type="text" id="s" name="s" value="'. __('type and hit enter', 'tb_glisseo') .'" onfocus="this.value=\'\'" onblur="this.value=\''. __('type and hit enter', 'tb_glisseo') .'\'"/>
 	      </form>';
 	    return $form;
@@ -372,6 +372,7 @@ function aq_resize( $url, $width, $height = null, $crop = null, $single = true )
 	function get_revslider_property($slider,$property){
 		global $wpdb;
 		global $table_prefix;
+		$table_prefix = $wpdb->base_prefix;
 		if (!isset($wpdb->tablename)) {
 			$wpdb->tablename = $table_prefix . 'revslider_sliders';
 		}

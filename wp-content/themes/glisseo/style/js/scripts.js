@@ -171,6 +171,7 @@ jQuery(document).ready(function() {
 		}, 600);
 		_index = n;
 		var _pv = _videoArr[_currentNum];
+		_currentNum = _index;
 		if (_pv) _pv.animate({
 			opacity: 0
 		}, 300, function() {
@@ -189,7 +190,7 @@ jQuery(document).ready(function() {
 			})
 		})
 		jQuery.address.path(_addressArr[_index])
-		_currentNum = _index;
+		//_currentNum = _index;
 		return false;
 	}
 }); 
